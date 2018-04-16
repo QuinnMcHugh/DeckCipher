@@ -1,0 +1,38 @@
+{% extends 'cipher/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div id="main" class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Background</h1>
+      <p>The idea for this cipher was inspired by learning about <a href="https://en.wikipedia.org/wiki/Steganography">Steganography</a> (the practice of concealing messages within other nonsecret objects or data). In ancient times, secret messages would bypass guards and cross borders by being disguised as empty wax tablets. But these tablets, when split apart, would reveal a hidden message designed to go unseen by all except those communicating.</p>
+      <p>Another famous example from ancient times involved the Greeks, who on occasion would shave the heads of their slaves, tattoo on them a secret message, wait for the hair to grow back, and then send the slave to whoever the King was communicating with. There, finally, the slave’s head could be shaved again and the message read, all with minimal fear that the message would be intercepted (after all, enemies who may capture the slave in-transit would never think to shave their head).</p>
+      <p>These Steganography stories got me thinking: What innocuous household object could be exploited for use in a cryptosystem? Answer: a deck of cards! They have suits, values, and can be arranged in a staggering 52! different number of permutations. My first thought was to have the ordering of the deck be the entire message, but quickly realized the limitations. To encode one letter of the alphabet, a card would have to denote one of 26 possibilities. Since there are 13 different values, and 4 different suits, each card has the ability to represent 52 different states. This effectively gives a single card the ability to represent one upper/lower case English letter (52 = 26 x 2), and a whole deck 52. That’s less than a Tweet. Pretty underwhelming stuff.</p>
+      <p>One aspect of the idea I did like, however, was the huge number of deck permutations, and the inherent security which lie in using one of these permutations as a secret key. This lead me to creating the cipher system located on the home page, and which I will now explain the workings of below.</p>
+
+      <h1>Explanation</h1>
+      <p>The deck cipher at its core is just a version of the Vigenère cipher, but with two modifications. The first is the key size, which since we are using a deck, is length 52. The second modification is that a reordering of the entire message occurs as the very last step. Using an example is the easiest way to explain its functionality, so let’s look at a simple one below:</p>
+      <p>Let’s take the message “cow” and the randomly shuffled deck shown below. The first card is 6d representing the Six of Diamonds, the second (4s) is the Four of Spades, and so on.</p>
+      <blockquote class="blockquote">
+        <p>6d4s3c8h10c9c5dKs10dJdKh7cKd2s5hKc10sJcAcQh3dQd7h9d4c6c6s3h2h2dJs7s9h7d8d3s4h10h6h5c4dAsQs8c9s2cAdJh8sAhQc5s</p>
+      </blockquote>
+
+      <h3>Stage 1</h3>
+      <p>The first step in enciphering the message is the Vigenère part. This means shifting each character forward by the value of the next card. This means the “c” in cow gets shifted forward 6 characters to “i” because the first card is the Six of Spades. The next card is the Four of Spades, so the next letter “o” gets shifted 4 places to “s”. After completing this for each letter, “cow” has become “isz”. </p>
+      <h3>Stage 2</h3>
+      <p>The text is already fairly mangled, but this cipher goes one step further. It reorders each character corresponding to the original order of a fresh pack of cards (see below). This means that of our 3 letter message, the “fresh pack” ordering is: 3c, 6d, 4s. Accordingly, the characters which were shifted by these values now get reordered as well. The new arrangement of letters goes from “isz” -> “zis”, yielding the final encrypted message.</p>
+      <img width="60%" src="{% static 'images/unshuffled-deck.png' %}">
+
+      <h3>Notes</h3>
+      <ul>
+        <li>You may wonder what happens when a letter like “z” is shifted forward by a card like an Ace. The result is wrapping back ground the alphabet, moving the “z” forward by one to an “a”.</li>
+        <li>Messages longer than 52 characters are broken apart into chunks, each of which gets encrypted and appended together in original order.</li>
+        <li>Lastly the process of decryption works the exact same way as detailed above, but with everything in reverse.</li>
+      </ul>
+    </div>
+  </div>
+
+  
+</div> <!-- /container -->
+{% endblock %}

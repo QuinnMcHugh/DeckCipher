@@ -1,0 +1,7 @@
+todo
+----
+-deploy to python anywhere, look into getting django hosting/setting up webserver in house
+-investigate CSRF form protection
+-make UI mobile friendly
+-push to github
+

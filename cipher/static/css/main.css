@@ -1,0 +1,25 @@
+textarea {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;         /* For IE and modern versions of Chrome */
+  -moz-box-sizing: border-box;    /* For Firefox                          */
+  -webkit-box-sizing: border-box; /* For Safari                           */
+}
+
+footer {
+  padding-bottom: 10px;
+}
+
+#btn-encipher-parent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#btn-encipher {
+  margin-top: 50%;
+}
+
+#main {
+  padding-top: 50px;
+}
